@@ -1,12 +1,24 @@
+import { applyMiddleware, combineReducers, createStore } from "redux";
+import thunk from "redux-thunk";
+
 import accountReducer from "./features/accounts/accountSlice";
 import customerReducer from "./features/customers/customerSlice";
 
+// NPM package for using redux dev tools  
+import { composeWithDevTools } from "redux-devtools-extension";
+
 import { configureStore } from "@reduxjs/toolkit";
 
-// Creating Redux store by using createStore(REDUCER FUNCTION)
-const store = configureStore({
-  reducer: { account: accountReducer, customer: customerReducer },
+const rootReducer = combineReducers({
+  account: accountReducer,
+  customer: customerReducer,
 });
+
+// Creating Redux store by using createStore(REDUCER FUNCTION)
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(thunk))
+);
 
 // // Dispatching action like in useReducer
 // store.dispatch({ type: "account/deposit", payload: 500 });
